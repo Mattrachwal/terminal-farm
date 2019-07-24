@@ -227,7 +227,7 @@ let food1 = new Food();
 
 const food = [food1];
 
-let chicken1 = new Chicken('1', 'x');
+let chicken1 = new Chicken('1', '\x1b[41m\x1b[36mx\x1b[0m');
 let chicken2 = new Chicken('2', 'X');
 let chicken3 = new Chicken('3', '×');
 let chicken4 = new Chicken('4', '+');
