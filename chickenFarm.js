@@ -131,8 +131,8 @@ function Chicken (name, body) {
 		}
 		
 	}
-	this.searchPosition = () => {
-		let onThisBlock = environment[this.y_position][this.x_position]
+	this.searchPosition = (map) => {
+		let onThisBlock = map[this.y_position][this.x_position]
 		if (onThisBlock === '░') {
 			this.hunger = this.hunger - 1;
 		} 
@@ -159,7 +159,7 @@ function Chicken (name, body) {
 	}
 }
 
-function simulate () {
+function simulate (map) {
 	// Move first
 	chickens.forEach( (chicken) => {
 
@@ -172,7 +172,7 @@ function simulate () {
 	})
 
 	chickens.forEach( (chicken) => {
-		chicken.searchPosition()
+		chicken.searchPosition(map)
 	})
 }
 // toggle that stuff for mac or windows.
@@ -187,19 +187,19 @@ function printScreen (string) {
 
 function drawFrame(callback) {
 	let string = '';
-	environment = JSON.parse(JSON.stringify(environment));;
+	newFrame = JSON.parse(JSON.stringify(environment));;
 	// PLACE FOOD
 	food.forEach( (peice) => {
-		environment[peice.y_position][peice.x_position] = peice.image;
+		newFrame[peice.y_position][peice.x_position] = peice.image;
 	})
-	simulate();
+	simulate(newFrame);
 	// SIMULATION OUTPUT
 	chickens.forEach( (chicken) => {
-		environment[chicken.y_position][chicken.x_position] = chicken.body;
+		newFrame[chicken.y_position][chicken.x_position] = chicken.body;
 	})
 	for (let i = 0; i < config.y_size; i++) {
 		for (let j = 0; j < config.x_size; j++) {
-			string = string + environment[i][j];
+			string = string + newFrame[i][j];
 		}
 		string = string + '\n';
 	}
