@@ -1,4 +1,4 @@
-const environment = [
+let environment = [
 	[' ','╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗',' '], //1
 	[' ','║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║',' '], //2
 	[' ','║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║',' '], //3
@@ -21,7 +21,7 @@ const environment = [
 // ┼
 
 const config = {
-	frame_rate: 250,
+	frame_rate: 200,
 	x_size: environment[0].length,
 	y_size: environment.length,
 	food_rate: 5,
@@ -82,11 +82,20 @@ function Chicken (name, body) {
 		this.moving = true;
 	}
 	this.searchForFood = () => {
-		for (let i = 0; i < this.vision; i++) {
-			
-		}
-		// If fails to find food
-		this.randomPosition();
+        let foundFood;
+		food.forEach( (peice) => {
+            if(Math.abs(this.x_position - peice.x_position) < this.vision && Math.abs(this.y_position - peice.y_position)) {
+                foundFood = peice;
+            }
+        })
+
+        if (foundFood) {
+            this.focus.x_position = peice.x_position;
+            this.focus.y_position = peice.y_position
+        } else {
+		    // If fails to find food
+            this.randomPosition();
+        }
 	}
 	this.searchForMate = () => {
 
@@ -178,19 +187,19 @@ function printScreen (string) {
 
 function drawFrame(callback) {
 	let string = '';
-	let newFrame = JSON.parse(JSON.stringify(environment));;
+	environment = JSON.parse(JSON.stringify(environment));;
 	// PLACE FOOD
 	food.forEach( (peice) => {
-		newFrame[peice.y_position][peice.x_position] = peice.image;
+		environment[peice.y_position][peice.x_position] = peice.image;
 	})
 	simulate();
 	// SIMULATION OUTPUT
 	chickens.forEach( (chicken) => {
-		newFrame[chicken.y_position][chicken.x_position] = chicken.body;
+		environment[chicken.y_position][chicken.x_position] = chicken.body;
 	})
 	for (let i = 0; i < config.y_size; i++) {
 		for (let j = 0; j < config.x_size; j++) {
-			string = string + newFrame[i][j];
+			string = string + environment[i][j];
 		}
 		string = string + '\n';
 	}
@@ -237,7 +246,6 @@ const chickens = [chicken1,chicken2, chicken3, chicken4,chicken5,chicken6,chicke
 
 runner();
 
-// We have issues, no outside collision detection, so they can leave the pen
 
 // 4,5
 // 2,3
