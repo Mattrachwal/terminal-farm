@@ -61,10 +61,10 @@ function Chicken (name, body) {
 	this.name = name;
   this.x_position = 1;
 	this.y_position = 1;
-	this.steps = 0;
-	this.hunger = 0;
+	this.steps = 70;
+	this.hunger = 4;
 	this.desire = 0;
-	this.vision = 5;
+	this.vision = 20;
 	this.body = body
 	this.focus = {
 		x_position: 4,
@@ -84,14 +84,14 @@ function Chicken (name, body) {
 	this.searchForFood = () => {
         let foundFood;
 		food.forEach( (peice) => {
-            if(Math.abs(this.x_position - peice.x_position) < this.vision && Math.abs(this.y_position - peice.y_position)) {
+            if((Math.abs(this.x_position - peice.x_position) < this.vision) && (Math.abs(this.y_position - peice.y_position) < this.vision)) {
                 foundFood = peice;
             }
         })
 
         if (foundFood) {
-            this.focus.x_position = peice.x_position;
-            this.focus.y_position = peice.y_position
+            this.focus.x_position = foundFood.x_position;
+            this.focus.y_position = foundFood.y_position
         } else {
 		    // If fails to find food
             this.randomPosition();
