@@ -11,13 +11,9 @@ class Screen {
             }
             frame += '\n';
         }
-        
         return frame;
      }
-    /**
-     * @param {*} frame
-     * The frame is a string formatted to create a grid using newlines.
-     */
+
     draw (frame) {
         //process.stdout.write('\x1Bc'); 
         console.clear();
@@ -26,4 +22,4 @@ class Screen {
     }
 }
 
-module.export = Screen;
+module.exports = Screen;
