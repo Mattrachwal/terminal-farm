@@ -1,12 +1,15 @@
+const { getRandomIntWithMaxRange } = require('./util')
 class Vertebrate {
   constructor (
     type,
+    symbol,
     age = 0,
     range,
     position_x,
     position_y
     ) {
     this.type = type;
+    this.symbol = symbol;
     this.age = age;
     this.range = range
     this.position = {
@@ -23,40 +26,40 @@ class Vertebrate {
     return Math.floor(Math.random() * Math.floor(2));
   }
 
-  checkCollision(config) {
+  _checkCollision(config) {
     if (this.focus.x >= config.x_size ) {
-      this.focus.x = config.x_size;
+      this.focus.x = config.x_size - 1;
     } else if (this.focus.x < 0 ) {
       this.focus.x = 0;
     }
 
-    if (this.focus.y >= config.size_y) {
-      this.focus.y = config.size_y;
+    if (this.focus.y >= config.y_size) {
+      this.focus.y = config.y_size - 1;
     } else if (this.focus.y < 0 ) {
-      this.focus.y_pos = 0;
+      this.focus.y = 0;
     }
   }
 
   _randomPosition (config) {  
-		this.focus.x_pos = this.getChoice() ? this.focus.x_pos + this.getRandomInt(this.range) : this.focus.x_pos - this.getRandomInt(this.range)
-		this.focus.y_pos = this.getChoice() ? this.focus.y_pos + this.getRandomInt(this.range) : this.focus.y_pos - this.getRandomInt(this.range)
-		this.checkCollision(config);
+		this.focus.x = this._getChoice() ? this.focus.x + getRandomIntWithMaxRange(this.range) : this.focus.x - getRandomIntWithMaxRange(this.range)
+		this.focus.y = this._getChoice() ? this.focus.y + getRandomIntWithMaxRange(this.range) : this.focus.y - getRandomIntWithMaxRange(this.range)
+		this._checkCollision(config);
   }
   
   _changePosition () {
     if (this.position.x > this.focus.x) {
-			this.position.x = this.position.x;
+			this.position.x = this.position.x - 1;
 			//this.steps++;
 		} else if (this.position.x < this.focus.x) {
-			this.position.x = this.position.x;
+			this.position.x = this.position.x + 1;
 			//this.steps++;
 		}
 		// handle Y traversal
 		if (this.position.y > this.focus.y) {
-			this.position.y = this.position.y;
+			this.position.y = this.position.y - 1;
 			//this.steps++;
 		} else if (this.position.y < this.focus.y) {
-			this.position.y = this.position.y;
+			this.position.y = this.position.y + 1;
 			//this.steps++;
     }
   }
@@ -68,12 +71,15 @@ class Vertebrate {
     return false;
   }
 
-
   move (config) {
-    if (! this._arrived()) {
-      this._changePosition();
+    if (this._arrived()) {
+      this._randomPosition(config)
     }
-    this._randomPosition(config)
+    this._changePosition();
+  }
+
+  render (baseGrid) {
+    baseGrid[this.position.y][this.position.x] = this.symbol;
   }
 }
 
