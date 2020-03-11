@@ -1,9 +1,5 @@
-const { getRandomInt } = require('./util');
+const { getRandomInt, get2DArray } = require('./util');
 const Screen = require('./Screen');
-const frameArray = [
-  [0,0,1,0,0],
-  [1,1,0,1,1]
-]
 const config = {
 	frame_rate: 100,
 	x_size: 50,
@@ -11,12 +7,13 @@ const config = {
 	performance: false,
 }
 
+const baseGrid = get2DArray(config.x_size, config.y_size);
 
 function runner(callback) {
 
-  frameArray[1][1] = getRandomInt(5);
+  baseGrid[1][1] = getRandomIntWithMaxRange(5);
 
-  screen.draw(screen.renderFrame(frameArray));
+  screen.draw(screen.renderFrame(baseGrid));
 
 	setTimeout(() => {
 			callback();

@@ -3,6 +3,16 @@ class Screen {
         
     }
 
+    applyFrameLayer(baseArr, layerArr) {
+        for ( var i = 0; i < layerArr.length; i++ ) {
+            for (var j = 0; j < layerArr[i].length; j++ ) {
+                if ( layerArr[i][j] !== ' ' ) {
+                    baseArr[i][j] = layerArr[i][j];
+                }
+            }
+        }
+    }
+
     renderFrame(frameArray) {
         let frame = '';
         for ( var i = 0; i < frameArray.length; i++ ) {
