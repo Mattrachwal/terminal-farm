@@ -86,7 +86,7 @@ class Vertebrate {
         this.purpose = 'walk';
         break;
       case 1:
-        this.purpose = 'material';
+        this.purpose = 'eat';
         break;
       default:
         this.purpose = 'walk';
@@ -99,9 +99,9 @@ class Vertebrate {
       if (this.purpose === 'walk') {
         this._randomPosition(config)
       }
-      if (this.purpose === 'material') {
+      if (this.purpose === 'eat') {
         this.searchForMaterial(materials);
-        this.material = this.searchPosition(materials)
+        this.eatMaterial(this.searchPosition(materials))
       }
     }
     this._changePosition();
@@ -110,8 +110,9 @@ class Vertebrate {
   // Material interaction ===========================================
 
   searchForMaterial(materials) {
-    for ( let material of materials ) {
-      if (material.type === 'block' && material.held === false) {
+    for ( let i = getRandomIntWithMaxRange(materials.length - 1); i < materials.length; i++) {
+      let material = materials[i];
+      if (material.type === 'grass') {
         this.focus.x = material.position.x;
         this.focus.y = material.position.y;
         break;
@@ -121,9 +122,8 @@ class Vertebrate {
 
   searchPosition(materials) {
     for ( let material of materials ) {
-      if (material.type === 'block') {
+      if (material.type === 'grass') {
         if ( this.position.x ===  material.position.x && this.position.y === material.position.y) {
-          material.held = true;
           return material;
           break;
         }
@@ -131,39 +131,10 @@ class Vertebrate {
     }
   }
 
-  pickupMaterial (material) {
-    this.material = material;
+  eatMaterial (material) {
+    material.growth -= 300;
   }
 
-  placeMaterial () {
-    this.material.position.x = this.position.x;
-    this.material.position.y = this.position.y;
-    this.material = null;
-  }
-
-  carryMaterial (config) {
-    switch(this.position.direction) {
-      case 'left':
-        this.material.position.x = this.position.x - 1;
-        this.material.position.y = this.position.y;
-        break;
-      case 'right':
-        this.material.position.x = this.position.x + 1;
-        this.material.position.y = this.position.y;
-        break;
-      case 'up':
-        this.material.position.x = this.position.x;
-        this.material.position.y = this.position.y - 1;
-        break;
-      case 'down':
-        this.material.position.x = this.position.x;
-        this.material.position.y = this.position.y + 1;
-        break;
-      default:
-        // code block
-    }
-    this.material.checkCollision(config);
-  }
 
   render (baseGrid) {
     baseGrid[this.position.y][this.position.x] = this.symbol;
