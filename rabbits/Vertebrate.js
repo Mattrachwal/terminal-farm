@@ -1,4 +1,7 @@
-const { getRandomIntWithMaxRange } = require('./util')
+const {
+  getRandomIntWithMaxRange,
+  getRandomIntWithMinMaxRange
+} = require('./util')
 class Vertebrate {
   constructor (
     type,
@@ -109,13 +112,34 @@ class Vertebrate {
 
   // Material interaction ===========================================
 
-  searchForMaterial(materials) {
+  searchForMaterialOLD(materials) {
     for ( let i = getRandomIntWithMaxRange(materials.length - 1); i < materials.length; i++) {
       let material = materials[i];
       if (material.type === 'grass') {
         this.focus.x = material.position.x;
         this.focus.y = material.position.y;
         break;
+      }
+    }
+  }
+
+  searchForMaterial(materials) {
+    // const x = getRandomIntWithMinMaxRange(this.position_x - this.range, this.position_x + this.range);
+    // const y = getRandomIntWithMinMaxRange(this.position_y - this.range, this.position_y + this.range);
+    for ( let material of materials ) {
+      if (material.type === 'grass') {
+        if(material.growth > 0) {
+          if (
+            material.position.y <= (this.position.y + this.range) / 2
+            && material.position.y >= (this.position.y - this.range) * 2
+            && material.position.x <= this.position.x + this.range
+            && material.position.x >= this.position.x - this.range
+            ) {
+              this.focus.x = material.position.x;
+              this.focus.y = material.position.y;
+              break;
+          }
+        }
       }
     }
   }

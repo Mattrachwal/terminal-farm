@@ -14,7 +14,7 @@ class Grass extends Material {
   }
 
   _grow () {
-    this.growth += 1;
+    this.growth += .5;
   }
   
 
@@ -26,6 +26,7 @@ class Grass extends Material {
   render(baseGrid) {
     if (this.growth < 0 ) {
       baseGrid[this.position.y][this.position.x] = ' ';
+      this.growth = -1000;
     } else if (this.growth / this.growth_rate <= 1 * this.growth_rate) {
       baseGrid[this.position.y][this.position.x] = '░';
     } else if (this.growth / this.growth_rate <= 2 * this.growth_rate) {

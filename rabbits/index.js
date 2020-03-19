@@ -4,15 +4,15 @@ const Vertebrate = require('./Vertebrate');
 const Grass = require('./Grass');
 
 const config = {
-	frame_rate: 60,
+	frame_rate: 50,
 	x_size: 90,
 	y_size: 40,
 	performance: false,
 }
 
 const vertebrates = []
-for (var j = 0; j < 200; j++) {
-	vertebrates.push(new Vertebrate('human', '¶', 25, 10, 1, 1));
+for (var j = 0; j < 100; j++) {
+	vertebrates.push(new Vertebrate('human', '¶', 3, 4, 1, 1));
 }
 
 
@@ -51,7 +51,6 @@ function applyLayers (baseGrid) {
 function runner(callback) {
 	const baseGrid = get2DArray(config.x_size, config.y_size);
 	simulate(config, materials);
-	baseGrid[1][1] = getRandomIntWithMaxRange(5);
 	applyLayers(baseGrid);
   screen.draw(screen.renderFrame(baseGrid));
 
